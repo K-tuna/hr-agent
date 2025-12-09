@@ -1,0 +1,31 @@
+# ======================================
+# Enterprise HR Agent - Requirements
+# LangChain 0.3.27 (LTS, 2026.12까지 지원)
+# ======================================
+
+# === LangChain 0.3.x 생태계 ===
+langchain==0.3.27
+langchain-community==0.3.27
+langchain-openai==0.3.0
+langgraph==0.2.60
+
+# === LLM ===
+openai==1.58.1
+tiktoken==0.8.0
+
+# === Vector Search (FAISS) ===
+faiss-cpu==1.9.0.post1
+
+# === Database ===
+sqlalchemy==2.0.36
+pymysql==1.1.1
+
+# === API Server ===
+fastapi==0.115.6
+uvicorn==0.32.1
+
+# === Utils ===
+pydantic==2.10.3
+python-dotenv==1.0.1
+pypdf==5.1.0
+

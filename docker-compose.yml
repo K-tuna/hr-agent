@@ -1,0 +1,29 @@
+services:
+  # HR 데이터베이스 (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: hr_db_container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: enterprise_hr_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d
+    networks:
+      - agent_net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Vector Search: FAISS (Python 코드 내 Embedded 모드)
+
+networks:
+  agent_net:
+    driver: bridge
+
