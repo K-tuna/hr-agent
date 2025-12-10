@@ -12,6 +12,7 @@ venv/
 
 # Database
 data/mysql_data/
+db/data/
 
 # Vector Index
 data/faiss_index/
