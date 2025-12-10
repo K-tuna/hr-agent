@@ -11,10 +11,14 @@ venv/
 .Python
 
 # Database
-db/data/
+data/mysql_data/
 
 # Vector Index
-faiss_index/
+data/faiss_index/
+
+# Jupyter Notebook
+notebooks/.ipynb_checkpoints/
+.ipynb_checkpoints/
 
 # IDE
 .idea/

@@ -1,9 +1,9 @@
 # ======================================
 # Enterprise HR Agent - Requirements
-# LangChain 0.3.27 (LTS, 2026.12까지 지원)
+# LangChain 0.3.27 (LTS until 2026.12)
 # ======================================
 
-# === LangChain 0.3.x 생태계 ===
+# === LangChain 0.3.x ===
 langchain==0.3.27
 langchain-community==0.3.27
 langchain-openai==0.3.0
@@ -28,4 +28,3 @@ uvicorn==0.32.1
 pydantic==2.10.3
 python-dotenv==1.0.1
 pypdf==5.1.0
-

@@ -12,8 +12,8 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./db/data:/var/lib/mysql
-      - ./db/init:/docker-entrypoint-initdb.d
+      - ./data/mysql_data:/var/lib/mysql
+      - ./data/db_init:/docker-entrypoint-initdb.d
     networks:
       - agent_net
     healthcheck:
@@ -26,4 +26,5 @@ services:
 networks:
   agent_net:
     driver: bridge
+
 
