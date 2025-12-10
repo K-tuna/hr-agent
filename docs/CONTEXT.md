@@ -46,20 +46,62 @@
 
 ---
 
+### Phase 3: RAG Agent (6-9h) ✅ 100% 완료
+**실험 파일:**
+- [x] `experiments/exp_05_document_loading.py` - PDF/TXT 로드 + 청킹
+- [x] `experiments/exp_06_faiss_index.py` - FAISS 인덱스 생성 및 검색
+- [x] `experiments/exp_07_rag_chain.py` - RAG Chain 구현
+- [x] `experiments/exp_08_rag_agent_test.py` - 리팩토링 후 테스트
+
+**프로덕션 코드:**
+- [x] `core/rag_agent.py` - RAGAgent 클래스 완성
+  - `query()` 메서드로 간단 사용
+  - FAISS 기반 벡터 검색
+  - OpenAI Embeddings (text-embedding-3-small)
+  - LangChain LCEL 스타일 RAG Chain
+  - 테스트 완료 (실행 가능)
+
+**데이터:**
+- [x] `data/company_docs/회사규정.txt` - 샘플 규정 문서
+- [x] `data/company_docs/회사규정.pdf` - PDF 버전
+- [x] `data/faiss_index/` - FAISS 인덱스 저장 완료
+
+**주요 성과:**
+- ✅ PDF/TXT 문서 로드 및 청킹
+- ✅ FAISS 벡터 검색 작동 확인
+- ✅ RAG Chain 답변 생성
+- ✅ 규정 기반 정확한 답변 제공
+
+---
+
 ## 🚧 진행 중 / 미착수
 
-### Phase 3: RAG Agent (6-9h) ⏭️ 미착수
-- [ ] data/company_rules.txt 샘플 작성
-- [ ] PDF 로드 + 청킹
-- [ ] OpenAI Embeddings
-- [ ] FAISS 인덱스 생성
-- [ ] 검색 + 답변 생성
-- [ ] core/rag_agent.py 완성
+### Phase 4: Router + 통합 (9-11h) ✅ 100% 완료
+**실험 파일:**
+- [x] `experiments/exp_09_router.py` - Router 의도 분류 실험 (6셀)
+- [x] `experiments/exp_10_graph.py` - LangGraph 통합 실험 (9셀)
+- [x] `experiments/exp_11_integration_test.py` - 통합 테스트 (10셀)
 
-### Phase 4: Router + 통합 (9-11h) ⏭️ 미착수
-- [ ] core/router.py (LLM 의도 분류)
-- [ ] core/graph.py (메인 LangGraph)
-- [ ] SQL/RAG Agent 통합
+**프로덕션 코드:**
+- [x] `core/router.py` - Router 클래스 완성
+  - LLM 기반 질문 의도 분류
+  - SQL_AGENT / RAG_AGENT 선택
+  - 안전한 폴백 메커니즘
+- [x] `core/graph.py` - HRAgent 클래스 완성
+  - LangGraph StateGraph 기반
+  - Router → SQL/RAG Agent 통합
+  - `query()` 메서드로 간단 사용
+  - verbose 모드 지원
+
+**주요 성과:**
+- ✅ 질문 의도 분류 정확도 높음
+- ✅ SQL/RAG Agent 원활한 통합
+- ✅ LangGraph 조건부 라우팅 작동
+- ✅ 통합 테스트 성공
+
+---
+
+## 🚧 진행 중 / 미착수
 
 ### Phase 5: FastAPI (11-14h) ⏭️ 미착수
 - [ ] app/main.py
@@ -163,18 +205,28 @@ result = chain.run(question="...")
 c:\workspace\enterprise-hr-agent\
 ├─ core/
 │  ├─ db_connection.py       ✅ DB 연결 헬퍼
-│  └─ sql_agent.py            ✅ SQL Agent 클래스
+│  ├─ sql_agent.py            ✅ SQL Agent 클래스
+│  ├─ rag_agent.py            ✅ RAG Agent 클래스
+│  ├─ router.py               ✅ Router 클래스
+│  └─ graph.py                ✅ HRAgent 통합 클래스
 │
 ├─ experiments/
 │  ├─ exp_01_sql_generation.py      ✅ SQL 생성 (학습)
 │  ├─ exp_02_self_correction.py     ✅ Self-Correction (학습)
 │  ├─ exp_03_langgraph_sql.py       ✅ LangGraph 구현 (9셀)
-│  └─ exp_04_sql_agent_test.py      ✅ 프로덕션 테스트 (7셀)
+│  ├─ exp_04_sql_agent_test.py      ✅ 프로덕션 테스트 (7셀)
+│  ├─ exp_05_document_loading.py    ✅ 문서 로드 + 청킹 (학습)
+│  ├─ exp_06_faiss_index.py         ✅ FAISS 인덱스 + 검색 (학습)
+│  ├─ exp_07_rag_chain.py           ✅ RAG Chain 구현 (학습)
+│  ├─ exp_08_rag_agent_test.py      ✅ 프로덕션 테스트
+│  ├─ exp_09_router.py              ✅ Router 실험 (6셀)
+│  ├─ exp_10_graph.py               ✅ 통합 그래프 실험 (9셀)
+│  └─ exp_11_integration_test.py    ✅ 통합 테스트 (10셀)
 │
 ├─ data/
 │  ├─ db_init/init.sql        ✅ 초기 DB 스키마
-│  ├─ company_docs/           ⏭️ 회사 규정 문서 (미착수)
-│  └─ faiss_index/            ⏭️ FAISS 인덱스 저장 (미착수)
+│  ├─ company_docs/           ✅ 회사 규정 문서 (TXT + PDF)
+│  └─ faiss_index/            ✅ FAISS 인덱스 저장 완료
 │
 ├─ app/                       ⏭️ FastAPI 앱 (미착수)
 ├─ docs/
@@ -189,20 +241,20 @@ c:\workspace\enterprise-hr-agent\
 ---
 
 ## ⏰ 시간 현황
-- **사용:** 약 6-7시간
-- **남음:** 9-10시간
-- **전체 진행률:** 약 40%
+- **사용:** 약 11-12시간
+- **남음:** 4-5시간
+- **전체 진행률:** 약 80%
 
 ## 📊 Phase별 진행률
 ```
 Phase 1: 환경 세팅        ████████████████████ 100% ✅
 Phase 2: SQL Agent        ████████████████████ 100% ✅
-Phase 3: RAG Agent        ···················· 0%   ⏭️
-Phase 4: Router + 통합    ···················· 0%   ⏭️
+Phase 3: RAG Agent        ████████████████████ 100% ✅
+Phase 4: Router + 통합    ████████████████████ 100% ✅
 Phase 5: FastAPI          ···················· 0%   ⏭️
 Phase 6: 마무리           ···················· 0%   ⏭️
 
-전체: ████████············ 40%
+전체: ████████████████···· 80%
 ```
 
 **Phase별 가중치:**
@@ -217,33 +269,28 @@ Phase 6: 마무리           ···················· 0%   ⏭�
 
 ## 🎯 다음 세션 시작점
 
-### 즉시 시작할 작업: Phase 3 (RAG Agent)
+### 즉시 시작할 작업: Phase 5 (FastAPI)
 
-**Step 1: 샘플 문서 작성**
+**Step 1: FastAPI 서버 구축**
 ```
-data/company_docs/회사규정.txt 생성
-- 휴가 규정
-- 근무 시간
-- 복지 제도
-- 평가 기준
+app/main.py 생성
+- FastAPI 앱 초기화
+- POST /query 엔드포인트
+- GET /health 엔드포인트
+- CORS 설정
 ```
 
-**Step 2: exp_05 작성**
-```python
-# experiments/exp_05_document_loading.py
-셀 1: 환경 설정
-셀 2: 문서 로드 (LangChain DocumentLoader)
-셀 3: 청킹 (RecursiveCharacterTextSplitter)
-셀 4: 청크 확인
-...
+**Step 2: 테스트**
+```
+- Postman/curl로 API 테스트
+- 다양한 질문 시나리오
+- 오류 처리 확인
 ```
 
 **예상 작업량:**
-- exp_05: 문서 로드 + 청킹 (5-6셀)
-- exp_06: FAISS 인덱스 + 검색 (6-7셀)
-- exp_07: RAG Chain (7-8셀)
-- core/rag_agent.py 리팩토링
-- exp_08: RAG 테스트
+- app/main.py 구현 (약 100-150줄)
+- app/__init__.py
+- 수동 테스트 (10개 시나리오)
 
 ---
 
@@ -273,19 +320,21 @@ data/company_docs/회사규정.txt 생성
 - ✅ OpenAI (gpt-4o-mini)
 - ✅ MySQL + SQLAlchemy
 - ✅ Docker
+- ✅ FAISS (벡터 DB)
+- ✅ OpenAI Embeddings (text-embedding-3-small)
+- ✅ LangChain DocumentLoader
+- ✅ RecursiveCharacterTextSplitter
 
 **다음 필요:**
-- ⏭️ FAISS (벡터 DB)
-- ⏭️ OpenAI Embeddings
-- ⏭️ LangChain DocumentLoader
-- ⏭️ RecursiveCharacterTextSplitter
-- ⏭️ FastAPI (나중)
+- ⏭️ FastAPI (Phase 5)
+- ⏭️ Router 구현 (Phase 4)
+- ⏭️ LangGraph 통합 (Phase 4)
 
 ---
 
 ## 🔥 핵심 성과물
 
-### SQLAgent 사용법
+### 1. SQLAgent 사용법
 ```python
 from core.sql_agent import SQLAgent
 
@@ -307,16 +356,69 @@ result = agent.query("직원 수는?")
 - ✅ Self-Correction 작동 확인
 - ✅ 연속 질문 안정적 처리
 
+### 2. RAGAgent 사용법
+```python
+from core.rag_agent import RAGAgent
+
+agent = RAGAgent(model="gpt-4o-mini", top_k=3)
+result = agent.query("연차는 몇일인가요?")
+
+# result = {
+#     "question": "연차는 몇일인가요?",
+#     "answer": "1년 이상 근속한 직원에게 15일의 연차휴가가 부여됩니다.",
+#     "source_docs": [...],
+#     "success": True
+# }
+```
+
+**검증 완료:**
+- ✅ PDF/TXT 문서 로드
+- ✅ FAISS 벡터 검색 정확도
+- ✅ 규정 기반 답변 생성
+- ✅ 없는 내용 적절히 거절
+
+### 3. HRAgent 통합 사용법 (핵심!)
+```python
+from core.graph import HRAgent
+
+# 통합 Agent 생성
+agent = HRAgent(model="gpt-4o-mini", verbose=False)
+
+# SQL 질문
+result = agent.query("직원 수는?")
+# → 자동으로 SQL Agent 선택 및 실행
+
+# RAG 질문
+result = agent.query("연차 규정은?")
+# → 자동으로 RAG Agent 선택 및 실행
+
+# result = {
+#     "question": str,
+#     "agent_type": "SQL_AGENT" or "RAG_AGENT",
+#     "final_answer": str,
+#     "success": bool
+# }
+```
+
+**검증 완료:**
+- ✅ Router 정확한 의도 분류
+- ✅ SQL/RAG Agent 원활한 통합
+- ✅ LangGraph 조건부 라우팅
+- ✅ 연속 질문 안정적 처리
+
 ---
 
 ## 📝 다음 세션 체크리스트
 
 새 세션 시작 시 확인:
-- [ ] 이 문서 읽기
-- [ ] 개발 방법론 숙지 (셀 1개씩, 30줄 이하)
-- [ ] Phase 3 시작: RAG Agent
-- [ ] 회사 규정 샘플 문서 작성부터
-- [ ] exp_05 셀 단위로 차근차근
+- [x] Phase 1 완료 ✅
+- [x] Phase 2 완료 ✅
+- [x] Phase 3 완료 ✅
+- [x] Phase 4 완료 ✅
+- [ ] Phase 5 시작: FastAPI
+- [ ] app/main.py 구현
+- [ ] API 테스트
+- [ ] Phase 6: 마무리
 
-**화이팅! 🚀**
+**화이팅! 🚀 이제 80% 완료, API만 만들면 끝!**
 
