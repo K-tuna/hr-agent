@@ -20,6 +20,26 @@
 
 ---
 
+## 🚀 Quick Start
+
+```bash
+# 1. 클론
+git clone https://github.com/K-tuna/enterprise-hr-agent.git
+cd enterprise-hr-agent
+
+# 2. 환경변수 설정
+echo "OPENAI_API_KEY=your-api-key" > .env
+
+# 3. 실행 (Docker)
+docker-compose up -d
+
+# 4. 접속
+# API: http://localhost:8000/docs
+# UI:  http://localhost:8501
+```
+
+---
+
 ## 🎯 핵심 차별점
 
 ### 1. **Self-Correction SQL Agent** ⚡
@@ -187,36 +207,44 @@ Few-shot 프롬프트로 정확한 의도 분류
 
 ## 📁 프로젝트 구조
 
+<details>
+<summary>펼쳐보기</summary>
+
 ```
 enterprise-hr-agent/
-├── app/                          # FastAPI 애플리케이션 (현업 구조)
-│   ├── main.py                  # 앱 진입점
+├── app/                          # FastAPI (3-tier 아키텍처)
+│   ├── main.py
 │   ├── core/                    # 설정 & 의존성
 │   ├── models/                  # Pydantic 모델
 │   ├── services/                # 비즈니스 로직
-│   └── api/v1/endpoints/        # API 엔드포인트
+│   └── api/v1/endpoints/        # REST 엔드포인트
 │
-├── core/                         # Agent 구현 (프로덕션)
-│   ├── sql_agent.py             # SQL Agent + Self-Correction
-│   ├── rag_agent.py             # RAG Agent (FAISS)
-│   ├── router.py                # 의도 분류기
-│   └── graph.py                 # LangGraph 통합
+├── core/                         # Agent 핵심 로직
+│   ├── agents/
+│   │   ├── hr_agent.py          # 통합 Agent (LangGraph)
+│   │   ├── sql_agent.py         # SQL Agent + Self-Correction
+│   │   └── rag_agent.py         # RAG Agent (FAISS)
+│   ├── database/
+│   │   └── connection.py        # DB 연결 + 스키마 조회
+│   ├── routing/
+│   │   └── router.py            # 질문 의도 분류 (Few-shot)
+│   ├── types/                   # 타입 정의
+│   └── container.py             # DI Container
 │
-├── experiments/                  # 개발 과정 (학습용, 11개 파일)
-│   ├── exp_01_sql_generation.py
-│   ├── exp_03_langgraph_sql.py
-│   ├── exp_06_faiss_index.py
-│   └── ...
+├── frontend/
+│   └── app.py                   # Streamlit 채팅 UI
 │
 ├── data/
-│   ├── db_init/init.sql         # MySQL 스키마 + 더미 데이터
-│   ├── company_docs/            # 사규 문서 (PDF/TXT)
-│   └── faiss_index/             # 벡터 인덱스
+│   ├── db_init/init.sql         # MySQL 스키마 + 더미 데이터 (15명)
+│   ├── company_docs/            # 사규 문서 (PDF)
+│   └── faiss_index/             # FAISS 벡터 인덱스
 │
-├── Dockerfile                    # Python 3.11 기반
-├── docker-compose.yml           # DB + API 통합
-└── requirements.txt             # 의존성 (LangChain, FastAPI 등)
+├── docker-compose.yml           # MySQL + API + Streamlit
+├── Dockerfile
+└── requirements.txt
 ```
+
+</details>
 
 ---
 
