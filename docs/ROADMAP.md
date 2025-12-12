@@ -3,10 +3,29 @@
 ---
 
 ## v1.0 ✅ (현재)
-- SQL Agent + Self-Correction (LangGraph 기반 재시도)
-- RAG Agent + FAISS (벡터 검색)
-- Router (LLM Few-shot 의도 분류)
-- FastAPI + Streamlit + Docker Compose
+
+### SQL Agent
+- Text-to-SQL (자연어 → SQL 자동 생성)
+- Self-Correction (에러 시 최대 3회 재시도)
+- 스키마 자동 인식 + ENUM 값 매핑
+- LLM 기반 자연어 답변 포맷팅
+
+### RAG Agent
+- PDF 문서 로드 (PDFPlumber)
+- 청킹 (500자, overlap 50자)
+- FAISS 벡터 검색 (Top-K=3)
+- 컨텍스트 기반 답변 생성
+
+### Router
+- LLM Few-shot 의도 분류
+- SQL/RAG 자동 분기
+- 에러 시 RAG 폴백
+
+### Infra
+- FastAPI 3-tier 구조
+- Streamlit 채팅 UI
+- Docker Compose (MySQL + API + Streamlit)
+- 빈 문자열 입력 검증
 
 ---
 

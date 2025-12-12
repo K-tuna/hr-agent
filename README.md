@@ -40,6 +40,22 @@ docker-compose up -d
 
 ---
 
+## 🛤️ 개발 과정
+
+| Phase | 작업 | 상세 |
+|-------|------|------|
+| 1 | 환경 구축 | Docker Compose (3개 서비스), MySQL 8.0 |
+| 2 | SQL Agent | 자연어→SQL, Self-Correction 자동 재시도 |
+| 3 | RAG Agent | 55,000자 PDF → 110+ 청크, FAISS Top-3 검색 |
+| 4 | Router | LLM Few-shot 의도 분류, LangGraph 통합 |
+| 5 | API | FastAPI 3-tier, Swagger 자동 문서화 |
+| 6 | UI | Streamlit 채팅, Agent 타입 실시간 표시 |
+| 7 | 리팩토링 | DI Container 패턴, 모듈 구조화 |
+
+📝 [트러블슈팅 10건 해결](docs/troubleshooting/README.md)
+
+---
+
 ## 🎯 핵심 차별점
 
 ### 1. **Self-Correction SQL Agent** ⚡
@@ -104,10 +120,12 @@ docker-compose up -d
 |---------|------|----------|
 | **LLM Framework** | LangChain 0.3.27 | LTS 지원 (2026.12까지), LCEL 스타일 |
 | **Graph Engine** | LangGraph 0.2.60 | Self-Correction 루프 구현 필수 |
-| **LLM** | OpenAI gpt-4o-mini | 성능/비용 최적 모델 |
-| **Vector DB** | FAISS 1.9.0 | Meta, 고성능 벡터 검색 |
-| **Web Framework** | FastAPI 0.115 | Async, 자동 문서화, 현업 표준 |
-| **Database** | MySQL 8.0 | 엔터프라이즈 HR 시스템 표준 |
+| **LLM** | gpt-4o-mini | 비용 효율 + 충분한 성능 |
+| **Embedding** | text-embedding-3-small | 6배 저렴, 한글 검색 충분 |
+| **Vector DB** | FAISS | 무료, 로컬 실행, 빠름 |
+| **Web Framework** | FastAPI | Async, 자동 문서화, 현업 표준 |
+| **Frontend** | Streamlit | 빠른 프로토타이핑, Python only |
+| **Database** | MySQL 8.0 | HR 시스템 업계 표준 |
 | **Infra** | Docker Compose | 개발/배포 환경 일치 |
 
 ---
