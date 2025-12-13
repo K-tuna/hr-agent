@@ -1,5 +1,10 @@
 # 프로젝트 규칙
 
+## 문서 위치
+- 프로젝트 컨텍스트: @docs/CONTEXT.md
+- 프로젝트 로드맵: @docs/ROADMAP.md
+- 트러블슈팅: @docs/troubleshooting/README.md
+
 ## 트러블슈팅 기록 규칙
 
 위치: `docs/troubleshooting/`
