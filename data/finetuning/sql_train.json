@@ -1,0 +1,1202 @@
+[
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "전체 직원 수는 몇 명이야?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as total_employees FROM employees WHERE status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "개발팀 직원 수 알려줘"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '개발' AND e.status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "영업팀에 몇 명이 있어?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '영업' AND e.status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "인사팀 인원 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '인사' AND e.status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부서별 직원 수 알려줘"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT d.name as department, COUNT(*) as count FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.status = 'ACTIVE' GROUP BY d.name"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "사원 직급은 몇 명이야?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees WHERE position = '사원' AND status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "과장 이상 직원 수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees WHERE position IN ('과장', '부장') AND status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "2023년에 입사한 직원 수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees WHERE YEAR(join_date) = 2023"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "휴직 중인 직원 몇 명이야?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees WHERE status = 'LEAVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "퇴사자 수 알려줘"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM employees WHERE status = 'RESIGNED'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "개발팀 평균 급여는?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(s.base_salary) as avg_salary FROM salaries s JOIN employees e ON s.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '개발'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "영업팀 평균 연봉"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(s.base_salary) as avg_salary FROM salaries s JOIN employees e ON s.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '영업'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "전체 직원 평균 급여"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(base_salary) as avg_salary FROM salaries"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부서별 평균 급여 비교"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT d.name as department, AVG(s.base_salary) as avg_salary FROM salaries s JOIN employees e ON s.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id GROUP BY d.name ORDER BY avg_salary DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "가장 높은 급여 받는 직원은?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, s.base_salary FROM employees e JOIN salaries s ON e.emp_id = s.emp_id ORDER BY s.base_salary DESC LIMIT 1"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "가장 낮은 급여는 얼마야?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT MIN(base_salary) as min_salary FROM salaries"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "급여 총액은?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT SUM(base_salary) as total_salary FROM salaries"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "보너스 총액 알려줘"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT SUM(bonus) as total_bonus FROM salaries"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "개발팀 보너스 평균"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(s.bonus) as avg_bonus FROM salaries s JOIN employees e ON s.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '개발'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "급여 5000만원 이상인 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, s.base_salary FROM employees e JOIN salaries s ON e.emp_id = s.emp_id WHERE s.base_salary >= 5000000"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "급여 4000만원 미만인 직원 수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM salaries WHERE base_salary < 4000000"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "직급별 평균 급여"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.position, AVG(s.base_salary) as avg_salary FROM employees e JOIN salaries s ON e.emp_id = s.emp_id GROUP BY e.position ORDER BY avg_salary DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부장 평균 급여"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(s.base_salary) as avg_salary FROM salaries s JOIN employees e ON s.emp_id = e.emp_id WHERE e.position = '부장'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "사원 평균 급여는?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(s.base_salary) as avg_salary FROM salaries s JOIN employees e ON s.emp_id = e.emp_id WHERE e.position = '사원'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "급여와 보너스 합계 top 5"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, (s.base_salary + s.bonus) as total FROM employees e JOIN salaries s ON e.emp_id = s.emp_id ORDER BY total DESC LIMIT 5"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "보너스 없는 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name FROM employees e JOIN salaries s ON e.emp_id = s.emp_id WHERE s.bonus = 0"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "보너스 100만원 이상 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, s.bonus FROM employees e JOIN salaries s ON e.emp_id = s.emp_id WHERE s.bonus >= 1000000"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "인사팀 급여 총액"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT SUM(s.base_salary) as total FROM salaries s JOIN employees e ON s.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '인사'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "영업팀 보너스 총액"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT SUM(s.bonus) as total FROM salaries s JOIN employees e ON s.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '영업'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "급여 중간값은?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT base_salary as median_salary FROM salaries ORDER BY base_salary LIMIT 1 OFFSET (SELECT COUNT(*)/2 FROM salaries)"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "오늘 지각한 사람 있어?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.date = CURDATE() AND a.status = 'LATE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "1월 2일 출근 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, a.check_in, a.status FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.date = '2024-01-02'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "김철수 근태 기록"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT a.date, a.check_in, a.check_out, a.status FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE e.name = '김철수' ORDER BY a.date"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "이번 달 지각 횟수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as late_count FROM attendance WHERE status = 'LATE' AND MONTH(date) = MONTH(CURDATE())"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "휴가 사용 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, COUNT(*) as vacation_days FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.status = 'VACATION' GROUP BY e.name"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "결근자 명단"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT DISTINCT e.name FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.status = 'ABSENT'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "개발팀 지각 횟수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT COUNT(*) as count FROM attendance a JOIN employees e ON a.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '개발' AND a.status = 'LATE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "가장 많이 지각한 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, COUNT(*) as late_count FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.status = 'LATE' GROUP BY e.name ORDER BY late_count DESC LIMIT 1"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "1월 휴가 사용자"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT DISTINCT e.name FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.status = 'VACATION' AND MONTH(a.date) = 1"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "출근율 계산해줘"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT ROUND(SUM(CASE WHEN status = 'PRESENT' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as attendance_rate FROM attendance"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부서별 지각 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT d.name, COUNT(*) as late_count FROM attendance a JOIN employees e ON a.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE a.status = 'LATE' GROUP BY d.name"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "9시 이전 출근한 사람"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT DISTINCT e.name FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.check_in < '09:00:00'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "야근한 직원 (18시 이후 퇴근)"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, a.date, a.check_out FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.check_out > '18:30:00'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평균 출근 시간"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(TIME_TO_SEC(check_in))/3600 as avg_check_in_hour FROM attendance WHERE check_in IS NOT NULL"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "1월 3일 결근자"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.date = '2024-01-03' AND a.status = 'ABSENT'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "연속 지각 2회 이상인 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, COUNT(*) as late_count FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.status = 'LATE' GROUP BY e.name HAVING late_count >= 2"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "이번 주 휴가자"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, a.date FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.status = 'VACATION' AND WEEK(a.date) = WEEK(CURDATE())"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "직원별 출근 일수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, COUNT(*) as work_days FROM attendance a JOIN employees e ON a.emp_id = e.emp_id WHERE a.status = 'PRESENT' GROUP BY e.name ORDER BY work_days DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "영업팀 휴가 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, COUNT(*) as vacation_days FROM attendance a JOIN employees e ON a.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '영업' AND a.status = 'VACATION' GROUP BY e.name"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "인사팀 출근율"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT ROUND(SUM(CASE WHEN a.status = 'PRESENT' THEN 1 ELSE 0 END) * 100.0 / COUNT(*), 2) as rate FROM attendance a JOIN employees e ON a.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '인사'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "김철수 평가 점수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT ev.year, ev.quarter, ev.score, ev.feedback FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE e.name = '김철수'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평가 평균 점수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(score) as avg_score FROM evaluations"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "4점 이상 받은 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE ev.score >= 4.0"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "최고 평가 점수 받은 사람"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id ORDER BY ev.score DESC LIMIT 1"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "최저 평가 점수는?"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT MIN(score) as min_score FROM evaluations"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부서별 평균 평가 점수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT d.name, AVG(ev.score) as avg_score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id GROUP BY d.name ORDER BY avg_score DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "개발팀 평균 평가"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(ev.score) as avg_score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '개발'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "영업팀 평가 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score, ev.feedback FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '영업'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "2023년 4분기 평가 결과"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE ev.year = 2023 AND ev.quarter = 4"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "3점 미만 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE ev.score < 3.5"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "직급별 평균 평가"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.position, AVG(ev.score) as avg_score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id GROUP BY e.position ORDER BY avg_score DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부장 평균 평가 점수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(ev.score) as avg_score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE e.position = '부장'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평가 피드백에 리더십 언급된 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.feedback FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE ev.feedback LIKE '%리더십%'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평가 점수 분포"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT FLOOR(score) as score_range, COUNT(*) as count FROM evaluations GROUP BY FLOOR(score)"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평가 4.5 이상인 직원 명단"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, e.position, ev.score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE ev.score >= 4.5"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "인사팀 평가 평균"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(ev.score) as avg_score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '인사'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "신입(사원) 평가 평균"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(ev.score) as avg_score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE e.position = '사원'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평가 피드백 목록"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.feedback FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id WHERE ev.feedback IS NOT NULL"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "분기별 평균 평가"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT quarter, AVG(score) as avg_score FROM evaluations GROUP BY quarter ORDER BY quarter"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평가 점수 상위 5명"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score FROM evaluations ev JOIN employees e ON ev.emp_id = e.emp_id ORDER BY ev.score DESC LIMIT 5"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "김철수 정보 알려줘"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, e.email, d.name as department, e.position, e.join_date FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.name = '김철수'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "개발팀 직원 명단"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, e.position FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '개발' AND e.status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부장 목록"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, d.name as department FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.position = '부장'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "2024년 입사자"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, join_date FROM employees WHERE YEAR(join_date) = 2024"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "서울 근무 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.location = '서울'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부산 근무 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.location = '부산'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "근속 5년 이상 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, join_date FROM employees WHERE DATEDIFF(CURDATE(), join_date) >= 1825"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "신입 직원 (1년 미만)"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, join_date FROM employees WHERE DATEDIFF(CURDATE(), join_date) < 365"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "이메일 목록"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, email FROM employees WHERE status = 'ACTIVE'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부서별 직원 명단"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT d.name as department, GROUP_CONCAT(e.name) as employees FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.status = 'ACTIVE' GROUP BY d.name"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "대리 직급 명단"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, d.name as department FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.position = '대리'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "과장 직급 명단"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, d.name as department FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.position = '과장'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "가장 오래 근무한 직원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, join_date FROM employees ORDER BY join_date LIMIT 1"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "가장 최근 입사자"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, join_date FROM employees ORDER BY join_date DESC LIMIT 1"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "입사일 순 직원 목록"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, join_date FROM employees ORDER BY join_date"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "영업팀 과장"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '영업' AND e.position = '과장'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "인사팀 직원 이메일"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, e.email FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE d.name = '인사'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "직급별 인원 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT position, COUNT(*) as count FROM employees WHERE status = 'ACTIVE' GROUP BY position"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부서 목록"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT name, location FROM departments"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "근무지별 인원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT d.location, COUNT(*) as count FROM employees e JOIN departments d ON e.dept_id = d.dept_id WHERE e.status = 'ACTIVE' GROUP BY d.location"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "급여 높은 순 직원 목록"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, d.name as department, s.base_salary FROM employees e JOIN departments d ON e.dept_id = d.dept_id JOIN salaries s ON e.emp_id = s.emp_id ORDER BY s.base_salary DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "평가 점수와 급여 비교"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score, s.base_salary FROM employees e JOIN evaluations ev ON e.emp_id = ev.emp_id JOIN salaries s ON e.emp_id = s.emp_id ORDER BY ev.score DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부서별 급여 총액과 인원"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT d.name, COUNT(*) as count, SUM(s.base_salary) as total_salary FROM employees e JOIN departments d ON e.dept_id = d.dept_id JOIN salaries s ON e.emp_id = s.emp_id GROUP BY d.name"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "지각 많은 직원의 평가 점수"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, COUNT(a.att_id) as late_count, ev.score FROM employees e JOIN attendance a ON e.emp_id = a.emp_id JOIN evaluations ev ON e.emp_id = ev.emp_id WHERE a.status = 'LATE' GROUP BY e.name, ev.score ORDER BY late_count DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "고성과자 급여 평균"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT AVG(s.base_salary) as avg_salary FROM employees e JOIN evaluations ev ON e.emp_id = ev.emp_id JOIN salaries s ON e.emp_id = s.emp_id WHERE ev.score >= 4.5"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "저성과자 명단"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, ev.score, d.name as department FROM employees e JOIN evaluations ev ON e.emp_id = ev.emp_id JOIN departments d ON e.dept_id = d.dept_id WHERE ev.score < 3.5"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "개발팀 급여와 평가 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, s.base_salary, ev.score FROM employees e JOIN departments d ON e.dept_id = d.dept_id JOIN salaries s ON e.emp_id = s.emp_id JOIN evaluations ev ON e.emp_id = ev.emp_id WHERE d.name = '개발'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "휴가 많이 쓴 직원 급여"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, COUNT(a.att_id) as vacation_days, s.base_salary FROM employees e JOIN attendance a ON e.emp_id = a.emp_id JOIN salaries s ON e.emp_id = s.emp_id WHERE a.status = 'VACATION' GROUP BY e.name, s.base_salary ORDER BY vacation_days DESC"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "부장 급여와 평가 비교"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, s.base_salary, ev.score FROM employees e JOIN salaries s ON e.emp_id = s.emp_id JOIN evaluations ev ON e.emp_id = ev.emp_id WHERE e.position = '부장'"
+      }
+    ]
+  },
+  {
+    "conversations": [
+      {
+        "role": "user",
+        "content": "신입 직원 평가 현황"
+      },
+      {
+        "role": "assistant",
+        "content": "SELECT e.name, e.join_date, ev.score FROM employees e JOIN evaluations ev ON e.emp_id = ev.emp_id WHERE e.position = '사원' ORDER BY e.join_date DESC"
+      }
+    ]
+  }
+]
