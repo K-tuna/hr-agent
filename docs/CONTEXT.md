@@ -20,12 +20,13 @@
 | 분류 | 기술 |
 |------|------|
 | Language | Python 3.11+ |
-| LLM | OpenAI gpt-4o-mini |
+| LLM | Ollama qwen3:8b (기본) / OpenAI gpt-4o-mini (선택) |
+| Embedding | Ollama snowflake-arctic-embed2 (1024d) / OpenAI text-embedding-3-small (1536d) |
 | Framework | LangGraph 0.2.60, LangChain 0.3.27, FastAPI 0.115.6 |
 | Vector DB | FAISS (faiss-cpu) |
 | Database | MySQL 8.0 (PyMySQL, SQLAlchemy) |
 | Frontend | Streamlit |
-| Infra | Docker Compose |
+| Infra | Docker Compose, Ollama |
 
 **코드 스타일:**
 ```python
@@ -64,6 +65,8 @@ enterprise-hr-agent/
 │   │   └── rag_agent.py        # RAG Agent (FAISS)
 │   ├── database/
 │   │   └── connection.py       # DB 연결 + 스키마 조회
+│   ├── llm/
+│   │   └── factory.py          # LLM Factory (OpenAI/Ollama 스위칭)
 │   ├── routing/
 │   │   ├── router.py           # 질문 의도 분류
 │   │   └── graph.py            # LangGraph 통합
@@ -85,6 +88,9 @@ enterprise-hr-agent/
 │   ├── company_docs/           # 회사 규정 문서
 │   └── faiss_index/            # FAISS 인덱스
 │
+├── scripts/                    # 유틸리티 스크립트
+│   └── build_index.py          # FAISS 인덱스 빌드
+│
 ├── experiments/                # 실험/학습용 파일
 ├── tests/                      # 테스트
 ├── docs/                       # 문서
@@ -99,13 +105,36 @@ enterprise-hr-agent/
 
 ---
 
+## 환경변수 설정
+
+```bash
+# .env
+LLM_PROVIDER=ollama              # ollama 또는 openai
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen3:8b
+OLLAMA_EMBEDDING_MODEL=snowflake-arctic-embed2
+
+# OpenAI 사용 시
+# LLM_PROVIDER=openai
+# OPENAI_API_KEY=sk-xxx
+# LLM_MODEL=gpt-4o-mini
+```
+
+> **주의**: LLM Provider 변경 시 FAISS 인덱스 재빌드 필요
+> ```bash
+> python scripts/build_index.py
+> ```
+
+---
+
 ## 사용법
 
 ### 1. SQL Agent
 ```python
 from core.agents.sql_agent import SQLAgent
 
-agent = SQLAgent(model="gpt-4o-mini", max_attempts=3)
+# Ollama 사용 (기본)
+agent = SQLAgent(provider="ollama", model="qwen3:8b", max_attempts=3)
 result = agent.query("개발팀 평균 급여는?")
 # → SQL 자동 생성 → 실행 → 자연어 답변
 ```
@@ -114,7 +143,8 @@ result = agent.query("개발팀 평균 급여는?")
 ```python
 from core.agents.rag_agent import RAGAgent
 
-agent = RAGAgent(model="gpt-4o-mini", top_k=3)
+# Ollama 사용 (기본)
+agent = RAGAgent(provider="ollama", model="qwen3:8b", top_k=3)
 result = agent.query("연차휴가 규정은?")
 # → FAISS 검색 → 규정 기반 답변
 ```
@@ -123,9 +153,13 @@ result = agent.query("연차휴가 규정은?")
 ```python
 from core.routing.graph import HRGraph
 
-graph = HRGraph(model="gpt-4o-mini")
-result = graph.query("직원 수는?")      # → SQL Agent
-result = graph.query("휴가 규정은?")    # → RAG Agent
+# DI Container 사용 (환경변수 기반 자동 설정)
+from core.container import init_container
+from app.core.config import get_settings
+
+container = init_container(get_settings())
+result = container.hr_graph.query("직원 수는?")      # → SQL Agent
+result = container.hr_graph.query("휴가 규정은?")    # → RAG Agent
 ```
 
 ### 4. API

@@ -27,6 +27,12 @@
 - Docker Compose (MySQL + API + Streamlit)
 - 빈 문자열 입력 검증
 
+### LLM Provider 추상화
+- LLM Factory 패턴 (`core/llm/factory.py`)
+- OpenAI ↔ Ollama 환경변수 기반 전환
+- Ollama qwen3:8b 기본 지원
+- FAISS 인덱스 임베딩 모델 연동 (snowflake-arctic-embed2)
+
 ---
 
 ## v1.1 - RAG 고도화
@@ -69,7 +75,7 @@
 - Semantic Layer (dbt/Cube.js 연동)
 
 ## v2.2 - LLM 다양화
-- Local LLM (Ollama - Llama3, Mistral 등 오픈소스)
+- ~~Local LLM (Ollama)~~ → v1.0에서 완료
 - Model Router (질문 복잡도에 따라 모델 선택)
 - Fallback Chain (모델 실패 시 대체 모델)
 
