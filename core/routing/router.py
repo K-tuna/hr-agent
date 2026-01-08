@@ -7,12 +7,14 @@ Router - 질문 의도 분류기
     # agent_type = "SQL_AGENT" 또는 "RAG_AGENT"
 """
 
-from langchain_openai import ChatOpenAI
+from typing import Optional
+
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from core.types.agent_types import AgentType
 from core.types.errors import RouterError
+from core.llm.factory import create_chat_model
 
 
 class Router:
@@ -23,19 +25,35 @@ class Router:
     - RAG_AGENT: 문서 검색
     """
 
-    def __init__(self, model: str = "gpt-4o-mini", temperature: float = 0):
+    def __init__(
+        self,
+        model: str = "gpt-4o-mini",
+        temperature: float = 0,
+        provider: str = "openai",  # LLM Provider ("openai" | "ollama")
+        base_url: Optional[str] = None,  # Ollama 서버 URL
+    ):
         """
         Args:
-            model: OpenAI 모델명
+            model: LLM 모델명 (예: "gpt-4o-mini", "llama3.1:8b")
             temperature: LLM temperature (0=결정적)
+            provider: LLM Provider ("openai" 또는 "ollama")
+            base_url: Ollama 서버 URL (ollama일 때만 사용)
         """
         self.model = model
         self.temperature = temperature
+        self.provider = provider
+        self.base_url = base_url
         self._init_chain()
 
     def _init_chain(self):
         """분류 체인 초기화"""
-        llm = ChatOpenAI(model=self.model, temperature=self.temperature)
+        # LLM Factory 패턴 사용
+        llm = create_chat_model(
+            provider=self.provider,
+            model=self.model,
+            temperature=self.temperature,
+            base_url=self.base_url
+        )
 
         # 프롬프트 (현업 스타일 - 경계 케이스 중심 Few-shot)
         template = """HR 시스템 질문 분류기입니다.

@@ -10,13 +10,13 @@ from pathlib import Path
 from typing import Optional
 
 from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 
 from core.types.agent_types import AgentResult
 from core.types.errors import RAGRetrievalError
+from core.llm.factory import create_chat_model, create_embeddings
 
 
 class RAGAgent:
@@ -34,19 +34,25 @@ class RAGAgent:
         top_k: int = 3,
         embedding_model: str = "text-embedding-3-small",
         index_path: Optional[str] = None,
+        provider: str = "openai",  # LLM Provider ("openai" | "ollama")
+        base_url: Optional[str] = None,  # Ollama 서버 URL
     ):
         """
         Args:
-            model: OpenAI 모델명
+            model: LLM 모델명 (예: "gpt-4o-mini", "llama3.1:8b")
             temperature: LLM temperature (0=결정적)
             top_k: 검색할 상위 k개 문서
-            embedding_model: 임베딩 모델명
+            embedding_model: 임베딩 모델명 (예: "text-embedding-3-small", "nomic-embed-text")
             index_path: FAISS 인덱스 경로 (None이면 기본 경로)
+            provider: LLM Provider ("openai" 또는 "ollama")
+            base_url: Ollama 서버 URL (ollama일 때만 사용)
         """
         self.model = model
         self.temperature = temperature
         self.top_k = top_k
         self.embedding_model = embedding_model
+        self.provider = provider
+        self.base_url = base_url
 
         # 인덱스 경로 설정
         if index_path is None:
@@ -59,8 +65,12 @@ class RAGAgent:
 
     def _init_components(self):
         """벡터스토어 및 RAG Chain 초기화"""
-        # Embeddings
-        self.embeddings = OpenAIEmbeddings(model=self.embedding_model)
+        # Embeddings (LLM Factory 패턴 사용)
+        self.embeddings = create_embeddings(
+            provider=self.provider,
+            model=self.embedding_model,
+            base_url=self.base_url
+        )
 
         # FAISS 인덱스 로드
         if not self.index_path.exists():
@@ -78,8 +88,13 @@ class RAGAgent:
         # Retriever
         self.retriever = self.vectorstore.as_retriever(search_kwargs={"k": self.top_k})
 
-        # LLM
-        self.llm = ChatOpenAI(model=self.model, temperature=self.temperature)
+        # LLM (LLM Factory 패턴 사용)
+        self.llm = create_chat_model(
+            provider=self.provider,
+            model=self.model,
+            temperature=self.temperature,
+            base_url=self.base_url
+        )
 
         # 프롬프트
         template = """당신은 회사 인사 규정 전문가입니다.

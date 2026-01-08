@@ -58,9 +58,19 @@ class Container:
         """Router 인스턴스"""
         if self._router is not None:
             return self._router
+
+        # Provider에 따라 모델명 선택
+        model = (
+            self.settings.OLLAMA_MODEL
+            if self.settings.LLM_PROVIDER == "ollama"
+            else self.settings.LLM_MODEL
+        )
+
         return Router(
-            model=self.settings.LLM_MODEL,
+            model=model,
             temperature=self.settings.LLM_TEMPERATURE,
+            provider=self.settings.LLM_PROVIDER,
+            base_url=self.settings.OLLAMA_BASE_URL,
         )
 
     @cached_property
@@ -68,10 +78,20 @@ class Container:
         """SQLAgent 인스턴스"""
         if self._sql_agent is not None:
             return self._sql_agent
+
+        # Provider에 따라 모델명 선택
+        model = (
+            self.settings.OLLAMA_MODEL
+            if self.settings.LLM_PROVIDER == "ollama"
+            else self.settings.LLM_MODEL
+        )
+
         return SQLAgent(
             db=self.db,
-            model=self.settings.LLM_MODEL,
+            model=model,
             max_attempts=self.settings.SQL_AGENT_MAX_ATTEMPTS,
+            provider=self.settings.LLM_PROVIDER,
+            base_url=self.settings.OLLAMA_BASE_URL,
         )
 
     @cached_property
@@ -79,12 +99,29 @@ class Container:
         """RAGAgent 인스턴스"""
         if self._rag_agent is not None:
             return self._rag_agent
+
+        # Provider에 따라 모델명 선택
+        model = (
+            self.settings.OLLAMA_MODEL
+            if self.settings.LLM_PROVIDER == "ollama"
+            else self.settings.LLM_MODEL
+        )
+
+        # Provider에 따라 임베딩 모델명 선택
+        embedding_model = (
+            self.settings.OLLAMA_EMBEDDING_MODEL
+            if self.settings.LLM_PROVIDER == "ollama"
+            else self.settings.RAG_EMBEDDING_MODEL
+        )
+
         return RAGAgent(
-            model=self.settings.LLM_MODEL,
+            model=model,
             temperature=self.settings.LLM_TEMPERATURE,
             top_k=self.settings.RAG_TOP_K,
-            embedding_model=self.settings.RAG_EMBEDDING_MODEL,
+            embedding_model=embedding_model,
             index_path=self.settings.RAG_INDEX_PATH,
+            provider=self.settings.LLM_PROVIDER,
+            base_url=self.settings.OLLAMA_BASE_URL,
         )
 
     @cached_property

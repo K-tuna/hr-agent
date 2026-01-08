@@ -1,0 +1,16 @@
+# AI 자동 탐색 제외 (토큰/크레딧 절약)
+# 필요시 직접 경로 지정하면 읽기 가능
+
+# RAG 데이터 소스 (대용량 문서)
+data/company_docs/
+
+# DB 데이터 파일
+data/mysql_data/
+data/faiss_index/
+db/data/
+
+# 가상환경
+venv/
+
+
+

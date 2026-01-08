@@ -50,6 +50,11 @@
 - 해결: HRAgent.query()에 빈 문자열 검증 추가
 - 파일: `core/agents/hr_agent.py`
 
+## 011-ollama-faiss-dimension-mismatch
+- 원인: OpenAI→Ollama 전환 시 FAISS 인덱스 임베딩 차원 불일치 (1536 vs 1024)
+- 해결: `python scripts/build_index.py`로 Ollama 임베딩 기반 인덱스 재생성
+- 파일: `data/faiss_index/`, `scripts/build_index.py`
+
 ---
 
 ## 배운 점
@@ -70,3 +75,7 @@
 ### 인프라
 1. 문서 변경 시 **FAISS 인덱스 재생성** 필수 (008)
 2. DB 데이터는 **네임드 볼륨** 사용 (바인드 마운트는 `down -v`로 안 지워짐) (009)
+
+### LLM Provider 전환
+1. **임베딩 모델 변경 시 FAISS 인덱스 재생성 필수** - 차원 불일치로 검색 실패 (011)
+2. OpenAI(1536차원) vs Ollama snowflake-arctic-embed2(1024차원) 호환 안 됨

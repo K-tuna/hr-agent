@@ -13,6 +13,9 @@ langgraph==0.2.60
 openai==1.58.1
 tiktoken==0.8.0
 
+# === Local LLM (Ollama) ===
+langchain-ollama==0.2.3
+
 # === Vector Search (FAISS) ===
 faiss-cpu==1.9.0.post1
 

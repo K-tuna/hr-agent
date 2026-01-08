@@ -35,11 +35,11 @@ print("[DEBUG] Container 초기화 완료")
 #print(f"[DEBUG] Router 테스트: {result}")
 
 # SQL Agent 테스트
-sql_agent = container.sql_agent
-result = sql_agent.query("김철수 휴가 몇번?")
-print(f"답변: {result['answer']}")
-print(f"SQL: {result['metadata']['sql']}")
-print(f"결과: {result['metadata']['results']}")
+# sql_agent = container.sql_agent
+# result = sql_agent.query("김철수 휴가 몇번?")
+# print(f"답변: {result['answer']}")
+# print(f"SQL: {result['metadata']['sql']}")
+# print(f"결과: {result['metadata']['results']}")
 
 # RAG Agent 테스트
 # rag_agent = container.rag_agent
@@ -49,6 +49,10 @@ print(f"결과: {result['metadata']['results']}")
 # print(f"성공: {result['success']}")
 
 # HR Agent 통합 테스트
-# hr_agent = container.hr_agent
-# result = hr_agent.query("직원 수는?")
-# print(f"[DEBUG] HR Agent 결과: {result}")
+hr_agent = container.hr_agent
+result = hr_agent.query("         ")
+print(f"답변: {result['answer']}")
+print(f"Agent: {result['metadata']['agent_type']}")
+print(f"\n리턴값: {result}\n")
+print(f"성공: {result['success']}")
+

@@ -29,6 +29,15 @@ class Settings(BaseSettings):
     LLM_MODEL: str = "gpt-4o-mini"
     LLM_TEMPERATURE: float = 0.0
 
+    # === LLM Provider 선택 ===
+    # "openai" 또는 "ollama" 중 선택
+    LLM_PROVIDER: str = Field(default="openai", env="LLM_PROVIDER")
+
+    # === Ollama 설정 (LLM_PROVIDER=ollama일 때 사용) ===
+    OLLAMA_BASE_URL: str = Field(default="http://localhost:11434", env="OLLAMA_BASE_URL")
+    OLLAMA_MODEL: str = Field(default="llama3.1:8b", env="OLLAMA_MODEL")
+    OLLAMA_EMBEDDING_MODEL: str = Field(default="nomic-embed-text", env="OLLAMA_EMBEDDING_MODEL")
+
     # === SQL Agent 설정 ===
     SQL_AGENT_MAX_ATTEMPTS: int = 3
 

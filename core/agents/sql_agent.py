@@ -11,13 +11,13 @@ SQL Agent (Refactored)
 import re
 from typing import Optional, List, Dict, Any
 
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langgraph.graph import StateGraph, END
 
 from core.database.connection import DatabaseConnection
 from core.types.agent_types import SQLAgentState, AgentResult
+from core.llm.factory import create_chat_model
 
 
 class SQLAgent:
@@ -34,17 +34,30 @@ class SQLAgent:
         db: DatabaseConnection,  # 의존성 주입
         model: str = "gpt-4o-mini",
         max_attempts: int = 3,
+        provider: str = "openai",  # LLM Provider ("openai" | "ollama")
+        base_url: Optional[str] = None,  # Ollama 서버 URL
     ):
         """
         Args:
             db: DatabaseConnection 인스턴스 (주입)
-            model: OpenAI 모델명
+            model: LLM 모델명 (예: "gpt-4o-mini", "llama3.1:8b")
             max_attempts: Self-Correction 최대 시도 횟수
+            provider: LLM Provider ("openai" 또는 "ollama")
+            base_url: Ollama 서버 URL (ollama일 때만 사용)
         """
         self.db = db
         self.model = model
         self.max_attempts = max_attempts
-        self.llm = ChatOpenAI(model=model, temperature=0)
+        self.provider = provider
+        self.base_url = base_url
+
+        # LLM Factory 패턴 사용
+        self.llm = create_chat_model(
+            provider=provider,
+            model=model,
+            temperature=0,
+            base_url=base_url
+        )
         self.app = self._build_workflow()
 
     def query(self, question: str) -> AgentResult:

@@ -7,6 +7,10 @@
 
 ## 트러블슈팅 기록 규칙
 
+**에러를 디버깅하고 해결했을 때, 반드시 아래 형식으로 문서를 작성하세요.**
+1. 상세 파일: `docs/troubleshooting/NNN-제목.md` 생성 (번호는 기존 파일 다음 번호)
+2. README 업데이트: `docs/troubleshooting/README.md`에 요약 추가
+
 위치: `docs/troubleshooting/`
 
 ### 파일 구조

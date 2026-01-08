@@ -8,7 +8,7 @@ Streamlit 채팅 UI for HR AI Agent
 import streamlit as st
 import requests
 
-API_URL = "http://api:8000/api/v1/query"  # FastAPI 서비스 이름(api) 기준
+API_URL = "http://localhost:8000/api/v1/query"  # FastAPI 서비스 이름(api) 기준
 
 # 페이지 설정
 st.set_page_config(
