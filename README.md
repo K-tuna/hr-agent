@@ -27,13 +27,17 @@
 git clone https://github.com/K-tuna/enterprise-hr-agent.git
 cd enterprise-hr-agent
 
-# 2. 환경변수 설정
-echo "OPENAI_API_KEY=your-api-key" > .env
+# 2. Ollama 설치 및 모델 다운로드
+# https://ollama.com 에서 설치 후:
+ollama pull qwen3:8b
 
-# 3. 실행 (Docker)
+# 3. 환경변수 설정 (Ollama 기본값)
+echo "OLLAMA_HOST=http://localhost:11434" > .env
+
+# 4. 실행 (Docker)
 docker-compose up -d
 
-# 4. 접속
+# 5. 접속
 # API: http://localhost:8000/docs
 # UI:  http://localhost:8501
 ```
@@ -74,7 +78,13 @@ docker-compose up -d
 - "연차 규정은?" → RAG Agent
 - Few-shot 프롬프트로 정확한 의도 분류
 
-### 3. **현업 표준 아키텍처** 🏗️
+### 3. **100% 로컬 LLM** 🏠
+API 비용 없이 **완전 오프라인** 실행 가능
+- **Ollama + Qwen3:8B**: 로컬 추론
+- **QLoRA 파인튜닝**: HR 도메인 특화 (qwen3-hr)
+- **sentence-transformers**: 로컬 임베딩
+
+### 4. **현업 표준 아키텍처** 🏗️
 - **LangGraph StateGraph**: 복잡한 플로우 선언적 구현
 - **FastAPI 3-tier**: API/Service/Model 분리 (15개 파일)
 - **FAISS 벡터 검색**: Meta의 고성능 라이브러리
@@ -120,8 +130,9 @@ docker-compose up -d
 |---------|------|----------|
 | **LLM Framework** | LangChain 0.3.27 | LTS 지원 (2026.12까지), LCEL 스타일 |
 | **Graph Engine** | LangGraph 0.2.60 | Self-Correction 루프 구현 필수 |
-| **LLM** | gpt-4o-mini | 비용 효율 + 충분한 성능 |
-| **Embedding** | text-embedding-3-small | 6배 저렴, 한글 검색 충분 |
+| **LLM** | Ollama + Qwen3:8B | 100% 로컬, API 비용 제로, 온프레미스 |
+| **Fine-tuned** | qwen3-hr (QLoRA) | HR 도메인 특화 모델 |
+| **Embedding** | sentence-transformers | 로컬 실행, 한글 지원 |
 | **Vector DB** | FAISS | 무료, 로컬 실행, 빠름 |
 | **Web Framework** | FastAPI | Async, 자동 문서화, 현업 표준 |
 | **Frontend** | Streamlit | 빠른 프로토타이핑, Python only |
@@ -304,6 +315,38 @@ template = """
 분류:"""
 ```
 
+### 4. RAG 파라미터 설정
+
+#### 문서 분석
+| 항목 | 값 |
+|-----|-----|
+| 대상 문서 | 02_회사규정.pdf (48페이지, 55,637자) |
+| 평균 문단 길이 | 1,000~1,400자 |
+| 생성된 청크 수 | 110+ 청크 |
+
+#### 파라미터 설정 근거
+
+| 구분 | 파라미터 | 설정값 | 근거 |
+|-----|---------|-------|------|
+| **Chunking** | chunk_size | 500자 | 문단 평균 ~1,100자, LangChain 권장 1,000자 |
+| | chunk_overlap | 50자 (10%) | 문맥 연결, LangChain 권장 20% |
+| | splitter | RecursiveCharacterTextSplitter | 80% RAG 앱 표준 |
+| **Retrieval** | top_k | 3 | 노이즈 vs 커버리지 균형 (권장 3~5) |
+| **LLM** | temperature | 0 | 정확성 우선, RAG 표준 |
+
+#### 파라미터 영향도
+
+| 순위 | 파라미터 | 영향 | 설명 |
+|-----|---------|-----|------|
+| 1 | chunk_size | 높음 | 검색 품질에 가장 큰 영향 |
+| 2 | chunk_overlap | 높음 | 문맥 손실 방지 |
+| 3 | top_k | 중간 | 검색 결과 수 조절 |
+| 4 | temperature | 낮음 | RAG는 0 고정이 표준 |
+
+#### 참고 자료
+- [LangChain RAG Tutorial](https://python.langchain.com/docs/tutorials/rag/) - chunk_size=1000, overlap=200
+- [Chunking Best Practices 2025](https://www.firecrawl.dev/blog/best-chunking-strategies-rag-2025)
+
 ---
 
 
@@ -317,9 +360,9 @@ template = """
 - ✅ 에러 메시지 기반 수정
 
 ### RAG Agent
-- ✅ PDF/TXT 문서 로드
-- ✅ RecursiveCharacterTextSplitter (청킹)
-- ✅ OpenAI Embeddings (text-embedding-3-small)
+- ✅ PDF 문서 로드 (PDFPlumber)
+- ✅ RecursiveCharacterTextSplitter (chunk_size=500, overlap=50)
+- ✅ 로컬 임베딩 (snowflake-arctic-embed2)
 - ✅ FAISS 벡터 검색 (Top-K=3)
 - ✅ 참조 문서 출처 제공
 
@@ -335,9 +378,10 @@ template = """
 | Version | Focus | Key Features |
 |---------|-------|--------------|
 | **v1.0** ✅ | 기본 완성 | SQL Agent, RAG Agent, Router |
-| v1.1 | RAG 고도화 | Hybrid Search, Re-ranking |
-| v1.2 | SQL 고도화 | Caching, Validation |
-| v2.0 | 고급 기능 | Agentic RAG, Local LLM |
+| **v1.5** ✅ | 로컬 LLM | OpenAI → Ollama/Qwen3 전환, 파인튜닝 (qwen3-hr) |
+| **v2.0** 🚧 | 2025 현업 표준 | SQL: Few-shot, SQLCoder / RAG: Reranker, Hybrid Search |
+| v2.1 | 모니터링 | LangSmith 트레이싱, RAGAS 평가 |
+| v2.2 | 보안 | PII 마스킹, SQL Validation |
 
-👉 [상세 로드맵](docs/ROADMAP.md)
+👉 [Phase 2 상세](docs/phase2/phase2_prd.md)
 

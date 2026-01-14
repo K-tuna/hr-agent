@@ -65,3 +65,13 @@ node_modules/
 
 # Serena (personal data)
 .serena/
+
+# Claude Code temp files
+tmpclaude-*/
+nul
+.claude/settings.local.json
+
+# Model files (large)
+models/*.gguf
+models/*.bin
+*.gguf
