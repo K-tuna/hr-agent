@@ -77,7 +77,7 @@ def load_documents(source_path: Path) -> list[Document]:
     return documents
 
 
-def chunk_documents(documents: list[Document], chunk_size: int = 500, overlap: int = 50) -> list[Document]:
+def chunk_documents(documents: list[Document], chunk_size: int = 1000, overlap: int = 200) -> list[Document]:
     """문서 청킹"""
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
@@ -158,7 +158,7 @@ def main():
     parser.add_argument("--source", type=str, help="소스 PDF 경로 (기본: data/company_docs/)")
     parser.add_argument("--output", type=str, help="인덱스 저장 경로 (기본: data/faiss_index/)")
     parser.add_argument("--test", action="store_true", help="검색 테스트만 실행")
-    parser.add_argument("--chunk-size", type=int, default=500, help="청크 크기")
+    parser.add_argument("--chunk-size", type=int, default=1000, help="청크 크기")
     args = parser.parse_args()
 
     config = load_config()

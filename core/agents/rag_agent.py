@@ -31,7 +31,7 @@ class RAGAgent:
         self,
         model: str = "gpt-4o-mini",
         temperature: float = 0,
-        top_k: int = 3,
+        top_k: int = 5,
         embedding_model: str = "text-embedding-3-small",
         index_path: Optional[str] = None,
         provider: str = "openai",  # LLM Provider ("openai" | "ollama")

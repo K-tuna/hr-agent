@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     SQL_AGENT_MAX_ATTEMPTS: int = 3
 
     # === RAG Agent 설정 ===
-    RAG_TOP_K: int = 3
+    RAG_TOP_K: int = 5
     RAG_EMBEDDING_MODEL: str = "text-embedding-3-small"
     RAG_INDEX_PATH: Optional[str] = None  # None이면 기본 경로 사용
 

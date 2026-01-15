@@ -317,35 +317,38 @@ template = """
 
 ### 4. RAG 파라미터 설정
 
-#### 문서 분석
-| 항목 | 값 |
-|-----|-----|
-| 대상 문서 | 02_회사규정.pdf (48페이지, 55,637자) |
-| 평균 문단 길이 | 1,000~1,400자 |
-| 생성된 청크 수 | 110+ 청크 |
+#### 최적 파라미터 (RAGAS 평가 기준)
 
-#### 파라미터 설정 근거
+| 파라미터 | 설정값 | 근거 |
+|---------|-------|------|
+| **chunk_size** | 1,000자 | RAGAS Context Precision 0.70 (500자 대비 +0.15) |
+| **chunk_overlap** | 200자 (20%) | 문맥 연결, LangChain 권장값 |
+| **top_k** | 5 | Context Recall 1.0 달성 |
+| **temperature** | 0 | 정확성 우선, RAG 표준 |
 
-| 구분 | 파라미터 | 설정값 | 근거 |
-|-----|---------|-------|------|
-| **Chunking** | chunk_size | 500자 | 문단 평균 ~1,100자, LangChain 권장 1,000자 |
-| | chunk_overlap | 50자 (10%) | 문맥 연결, LangChain 권장 20% |
-| | splitter | RecursiveCharacterTextSplitter | 80% RAG 앱 표준 |
-| **Retrieval** | top_k | 3 | 노이즈 vs 커버리지 균형 (권장 3~5) |
-| **LLM** | temperature | 0 | 정확성 우선, RAG 표준 |
+#### RAGAS 평가 결과
+
+| 설정 | Context Precision | Context Recall | 평균 |
+|-----|-------------------|----------------|-----|
+| **1000/200, k=5** | 0.702 | 1.000 | **0.851** |
+| 1000/200, k=3 | 0.692 | 0.900 | 0.796 |
+| 500/50, k=5 | 0.553 | 1.000 | 0.776 |
+| 500/50, k=3 | 0.558 | 0.800 | 0.679 |
+
+> **RAGAS**: LLM 기반 RAG 평가 프레임워크. 키워드 매칭보다 의미적 관련성을 정확히 평가.
 
 #### 파라미터 영향도
 
 | 순위 | 파라미터 | 영향 | 설명 |
 |-----|---------|-----|------|
-| 1 | chunk_size | 높음 | 검색 품질에 가장 큰 영향 |
+| 1 | chunk_size | 높음 | 맥락 충분성에 가장 큰 영향 |
 | 2 | chunk_overlap | 높음 | 문맥 손실 방지 |
-| 3 | top_k | 중간 | 검색 결과 수 조절 |
+| 3 | top_k | 중간 | Recall에 직접 영향 |
 | 4 | temperature | 낮음 | RAG는 0 고정이 표준 |
 
 #### 참고 자료
 - [LangChain RAG Tutorial](https://python.langchain.com/docs/tutorials/rag/) - chunk_size=1000, overlap=200
-- [Chunking Best Practices 2025](https://www.firecrawl.dev/blog/best-chunking-strategies-rag-2025)
+- [RAGAS Documentation](https://docs.ragas.io/) - RAG 평가 프레임워크
 
 ---
 
@@ -361,9 +364,10 @@ template = """
 
 ### RAG Agent
 - ✅ PDF 문서 로드 (PDFPlumber)
-- ✅ RecursiveCharacterTextSplitter (chunk_size=500, overlap=50)
+- ✅ RecursiveCharacterTextSplitter (chunk_size=1000, overlap=200)
 - ✅ 로컬 임베딩 (snowflake-arctic-embed2)
-- ✅ FAISS 벡터 검색 (Top-K=3)
+- ✅ FAISS 벡터 검색 (Top-K=5)
+- ✅ RAGAS 기반 파라미터 최적화
 - ✅ 참조 문서 출처 제공
 
 ### Router
