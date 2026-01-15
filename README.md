@@ -50,7 +50,7 @@ docker-compose up -d
 |-------|------|------|
 | 1 | 환경 구축 | Docker Compose (3개 서비스), MySQL 8.0 |
 | 2 | SQL Agent | 자연어→SQL, Self-Correction 자동 재시도 |
-| 3 | RAG Agent | 55,000자 PDF → 110+ 청크, FAISS Top-3 검색 |
+| 3 | RAG Agent | 55,000자 PDF → 97 청크, FAISS Top-5 검색 |
 | 4 | Router | LLM Few-shot 의도 분류, LangGraph 통합 |
 | 5 | API | FastAPI 3-tier, Swagger 자동 문서화 |
 | 6 | UI | Streamlit 채팅, Agent 타입 실시간 표시 |
