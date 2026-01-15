@@ -1,0 +1,35 @@
+{
+  "comparison": [
+    {
+      "config": "현재 (500/50)",
+      "top_k": 3,
+      "avg_match_rate": 0.8800000000000001,
+      "chunk_count": 147
+    },
+    {
+      "config": "현재 (500/50)",
+      "top_k": 5,
+      "avg_match_rate": 0.95,
+      "chunk_count": 147
+    },
+    {
+      "config": "권장 (1000/200)",
+      "top_k": 3,
+      "avg_match_rate": 0.85,
+      "chunk_count": 91
+    },
+    {
+      "config": "권장 (1000/200)",
+      "top_k": 5,
+      "avg_match_rate": 0.925,
+      "chunk_count": 91
+    }
+  ],
+  "best_config": {
+    "config": "현재 (500/50)",
+    "top_k": 5,
+    "avg_match_rate": 0.95,
+    "chunk_count": 147
+  },
+  "improvement": 0.06999999999999984
+}
