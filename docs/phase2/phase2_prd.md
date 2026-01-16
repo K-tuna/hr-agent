@@ -39,11 +39,11 @@ Fine-tuned 모델 (qwen3-hr) → 평가 → 점수 B
 | Router | ✅ 완료 | LLM 의도 분류 |
 | API/UI | ✅ 완료 | FastAPI + Streamlit |
 | 파인튜닝 | ✅ 완료 | qwen3-hr 모델 생성 |
-| 평가 스크립트 | ⚠️ 버그 | 응답 파싱 오류로 0% 결과 |
+| 평가 체계 | ⚠️ 미구현 | 노트북 기반 구현 필요 |
 
 ### 2.2 문제점
 1. **평가 표준 미달**: 현재 키워드 매칭 방식 → RAGAS 표준 필요
-2. **평가 버그**: `'dict' object has no attribute 'metadata'` 오류
+2. **SQL 평가 미구현**: Execution Accuracy 평가 노트북 필요
 3. **디버깅 어려움**: LLM 호출 과정을 추적할 수 없음
 4. **보안 취약점**: PII 노출, SQL Injection 위험
 5. **검색 품질 한계**: 단순 벡터 검색만 사용
@@ -66,7 +66,7 @@ Fine-tuned 모델 (qwen3-hr) → 평가 → 점수 B
 | Epic | Task ID | 제목 | 우선순위 | 상태 |
 |------|---------|------|----------|------|
 | 평가 시스템 | 1 | RAG 평가 (RAGAS) | High | 신규 |
-| 평가 시스템 | 2 | SQL 평가 (버그 수정) | High | 버그 수정 |
+| 평가 시스템 | 2 | SQL 평가 (Execution Accuracy) | High | 신규 |
 | 모니터링 | 3 | LangSmith 트레이싱 | High | 신규 |
 | 보안 | 4 | Guardrails + PII 마스킹 | Medium | 신규 |
 | 보안 | 5 | SQL Query Validation | Medium | 신규 |
@@ -128,31 +128,39 @@ from ragas.metrics import (
 
 ---
 
-#### FR-1.2: SQL 평가 - 버그 수정 (Task 2)
+#### FR-1.2: SQL 평가 - Execution Accuracy (Task 2)
 
-**현업 표준**: Execution Accuracy (Spider Benchmark)
-> "Execution Accuracy (EX): An output SQL is considered correct if it returns a multiset of rows identical to the reference"
-> — [Spider Benchmark](https://yale-lily.github.io/spider)
-
-**현재 상태**: ✅ 이미 표준 방식으로 구현됨 (`scripts/evaluate_sql.py`)
-**문제**: 버그로 인해 0% 결과
+**현업 표준**: Execution Accuracy
+> "SQL을 실행해서 결과가 같으면 정답" - 별도 라이브러리 없이 직접 구현
+> — [Defog SQL-Eval](https://github.com/defog-ai/sql-eval)
 
 | ID | 요구사항 | 수용 기준 |
 |----|----------|----------|
-| FR-1.2.1 | 응답 파싱 버그 수정 | `'dict' object has no attribute 'metadata'` 해결 |
-| FR-1.2.2 | SQLAgent 응답 형식 확인 | 실제 반환 형식에 맞게 파싱 |
-| FR-1.2.3 | Execution Accuracy 측정 | 에러 없이 실행된 비율 |
-| FR-1.2.4 | Result Accuracy 측정 | 결과가 정답과 일치하는 비율 |
-| FR-1.2.5 | Base vs Fine-tuned 비교 | qwen3:8b vs qwen3-hr 정확도 비교 |
+| FR-1.2.1 | 평가 함수 구현 | 정답 SQL vs 생성 SQL 결과 비교 |
+| FR-1.2.2 | Execution Accuracy 계산 | 결과 일치 비율 측정 |
+| FR-1.2.3 | Exact Match 계산 (선택) | SQL 문법 일치 비율 |
+| FR-1.2.4 | Base vs Fine-tuned 비교 | qwen3:8b vs qwen3-hr |
+| FR-1.2.5 | 결과 저장 | JSON 파일로 저장 |
 
-**버그 원인 (확인됨):**
+**평가 로직:**
 ```python
-# evaluate_sql.py:90 - 현재 코드
-generated_sql = response.get("metadata", {}).get("sql", "")
-
-# 문제: SQLAgent.query()가 반환하는 형식이 다름
-# 수정 필요: 실제 응답 형식 확인 후 파싱 로직 수정
+def evaluate_sql(question, gold_sql, generated_sql, db):
+    """Execution Accuracy 평가"""
+    try:
+        gold_result = db.execute(gold_sql)
+        gen_result = db.execute(generated_sql)
+        is_correct = gold_result == gen_result
+        return {"execution_accuracy": is_correct}
+    except Exception as e:
+        return {"execution_accuracy": False, "error": str(e)}
 ```
+
+**RAG vs SQL 평가 비교:**
+| | RAG | SQL |
+|--|-----|-----|
+| 표준 도구 | RAGAS 라이브러리 | 직접 구현 (DB 실행) |
+| 평가 방식 | LLM-as-Judge | 결과 비교 |
+| 메트릭 | Faithfulness, Relevancy | Execution Accuracy |
 
 ---
 
@@ -463,7 +471,7 @@ Given the database schema, here is the SQL query that answers [QUESTION]{user_qu
          ↓
 
 [Phase B] 평가 체계 (Measurement) - 측정할 수 있어야 개선 가능
-[Step 2] Task 2: SQL 평가 버그 수정
+[Step 2] Task 2: SQL 평가 (Execution Accuracy)
          ↓
 [Step 3] Task 1: RAG 평가 RAGAS 적용
          ↓
@@ -513,7 +521,7 @@ notebooks/phase2/
 | Step | Task | 학습 노트북 | 구현 노트북 | 내용 |
 |------|------|-------------|-------------|------|
 | 1 | Task 3 | study_01_langsmith | step_01_langsmith | LangSmith 트레이싱 |
-| 2 | Task 2 | study_02_sql_evaluation | step_02_sql_evaluation | SQL 평가 버그 수정 |
+| 2 | Task 2 | study_02_sql_evaluation | step_02_sql_evaluation | SQL 평가 (Execution Accuracy) |
 | 3 | Task 1 | study_03_rag_evaluation | step_03_rag_evaluation | RAGAS 평가 |
 | 4 | Task 7 | study_04_chunking | step_04_chunking | 청킹 최적화 |
 | 5 | Task 9 | study_05_hybrid_search | step_05_hybrid_search | Hybrid Search |
@@ -539,7 +547,7 @@ notebooks/phase2/
 | RAGAS Faithfulness | 표준 | ≥ 0.7 | `ragas.evaluate()` |
 | RAGAS Answer Relevancy | 표준 | ≥ 0.7 | `ragas.evaluate()` |
 | RAGAS Context Precision | 표준 | ≥ 0.7 | `ragas.evaluate()` |
-| SQL Execution Accuracy | 표준 | ≥ 80% | `scripts/evaluate_sql.py` |
+| SQL Execution Accuracy | 표준 | ≥ 80% | `step_02_sql_evaluation.ipynb` |
 
 ### 6.2 Agent 고도화 효과 (2025 표준 적용 후)
 
