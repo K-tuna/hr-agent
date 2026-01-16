@@ -1,10 +1,10 @@
 # Phase 2: 구현 상세 가이드
 
 > **Implementation Guide**
-> 버전: 2.0
+> 버전: 2.1
 > 작성일: 2025-01-16
 > 대상: 초보 개발자 (학습 병행)
-> 참조: docs/phase2/phase2_prd.md (v2.0 - 2025 현업 표준 반영)
+> 참조: docs/phase2/phase2_prd.md (v2.1 - RAG 먼저, SQL 나중)
 
 ---
 
@@ -14,10 +14,10 @@
 Phase 2 PRD에 정의된 Task를 **2025 현업 표준 패턴**으로 구현하기 위한 상세 가이드입니다.
 각 Step은 **학습 → 구현 → 검증** 사이클로 구성되어 있습니다.
 
-> **2025 현업 표준 업데이트 (v2.0)**
+> **2025 현업 표준 업데이트 (v2.1)**
 > - 모니터링(LangSmith)이 최우선
-> - SQL Agent 고도화: Schema → Few-shot → Masked → CoT → SQLCoder 순서
-> - RAG Agent 고도화: Chunking → Hybrid → Reranker 순서
+> - **RAG Agent 먼저** (빠르게 완료): Chunking → Hybrid → Reranker 순서
+> - **SQL Agent 나중** (차별화 포인트): Schema → Few-shot → Masked → CoT → SQLCoder 순서
 > - 상세 구현은 학습 노트북(`notebooks/phase2/study/`) 참조
 
 ### 1.2 구현 순서 (2025 현업 표준 기반)
@@ -30,17 +30,17 @@ Step 1: Task 3 (LangSmith 트레이싱) ─────────────�
 Step 2: Task 2 (SQL 평가 버그 수정) ───────────────────┤
 Step 3: Task 1 (RAG 평가 RAGAS) ───────────────────────┤
                                                         │
-[Phase C: SQL Agent 고도화 - 2025 SOTA]                 │
-Step 4: Task 11 (Schema Enhancement) ──────────────────┤
-Step 5: Task 10 (Dynamic Few-shot) ────────────────────┤
-Step 6: Task 10-2 (마스크 질문 임베딩) ★신규 ──────────┤
-Step 7: Task 10-3 (CoT 프롬프팅) ★신규 ────────────────┤
-Step 8: Task 12 (SQLCoder - 선택적) ───────────────────┤
+[Phase C: RAG Agent 고도화 - 2025 SOTA] 빠르게 완료     │
+Step 4: Task 7 (Chunking 최적화) ──────────────────────┤
+Step 5: Task 9 (Hybrid Search) ────────────────────────┤
+Step 6: Task 8 (Reranker) ─────────────────────────────┤
                                                         │
-[Phase D: RAG Agent 고도화 - 2025 SOTA]                 │
-Step 9: Task 7 (Chunking 최적화) ──────────────────────┤
-Step 10: Task 9 (Hybrid Search) ───────────────────────┤
-Step 11: Task 8 (Reranker) ────────────────────────────┤
+[Phase D: SQL Agent 고도화 - 2025 SOTA] 차별화 포인트   │
+Step 7: Task 11 (Schema Enhancement) ──────────────────┤
+Step 8: Task 10 (Dynamic Few-shot) ────────────────────┤
+Step 9: Task 10-2 (마스크 질문 임베딩) ★신규 ──────────┤
+Step 10: Task 10-3 (CoT 프롬프팅) ★신규 ───────────────┤
+Step 11: Task 12 (SQLCoder - 선택적) ──────────────────┤
                                                         │
 [Phase E: 보안 - Security]                              │
 Step 12: Task 5 (SQL Query Validation) ────────────────┤
@@ -1991,14 +1991,14 @@ notebooks/phase2/
 | 1 | Task 3 | study_01_langsmith | step_01_langsmith | LangSmith 트레이싱 |
 | 2 | Task 2 | study_02_sql_evaluation | step_02_sql_evaluation | SQL 평가 버그 수정 |
 | 3 | Task 1 | study_03_rag_evaluation | step_03_rag_evaluation | RAGAS 평가 |
-| 4 | Task 11 | study_04_schema_enhancement | step_04_schema_enhancement | 스키마 설명 추가 |
-| 5 | Task 10 | study_05_fewshot_embedding | step_05_fewshot_embedding | Few-shot 임베딩 검색 |
-| 6 | Task 10-2 | study_06_masked_fewshot | step_06_masked_fewshot | 마스크 질문 임베딩 |
-| 7 | Task 10-3 | study_07_cot_prompting | step_07_cot_prompting | CoT 프롬프팅 |
-| 8 | Task 12 | study_08_sqlcoder | step_08_sqlcoder_comparison | SQLCoder 비교 (선택적) |
-| 9 | Task 7 | study_09_chunking | step_09_chunking | 청킹 최적화 |
-| 10 | Task 9 | study_10_hybrid_search | step_10_hybrid_search | Hybrid Search |
-| 11 | Task 8 | study_11_reranker | step_11_reranker | Reranker |
+| 4 | Task 7 | study_04_chunking | step_04_chunking | 청킹 최적화 |
+| 5 | Task 9 | study_05_hybrid_search | step_05_hybrid_search | Hybrid Search |
+| 6 | Task 8 | study_06_reranker | step_06_reranker | Reranker |
+| 7 | Task 11 | study_07_schema_enhancement | step_07_schema_enhancement | 스키마 설명 추가 |
+| 8 | Task 10 | study_08_fewshot_embedding | step_08_fewshot_embedding | Few-shot 임베딩 검색 |
+| 9 | Task 10-2 | study_09_masked_fewshot | step_09_masked_fewshot | 마스크 질문 임베딩 |
+| 10 | Task 10-3 | study_10_cot_prompting | step_10_cot_prompting | CoT 프롬프팅 |
+| 11 | Task 12 | study_11_sqlcoder | step_11_sqlcoder_comparison | SQLCoder 비교 (선택적) |
 | 12 | Task 5 | study_12_sql_validation | step_12_sql_validation | SQL 쿼리 검증 |
 | 13 | Task 4 | study_13_guardrails | step_13_guardrails | Guardrails + PII |
 | 14 | Task 13 | study_14_streaming | step_14_streaming | Streaming + 히스토리 |
@@ -2012,3 +2012,4 @@ notebooks/phase2/
 |------|------|----------|
 | 1.0 | 2025-01-12 | 초안 작성 |
 | 2.0 | 2025-01-16 | **2025 현업 표준 적용**: Phase A-F 순서 재정렬, SQL 고도화(Step 4-8) 추가, RAG 순서 수정(Hybrid→Reranker), study/ 노트북 구조 반영 |
+| 2.1 | 2025-01-16 | **실행 순서 변경**: RAG 먼저 (Phase C, Step 4-6), SQL 나중 (Phase D, Step 7-11) - RAG는 빠르게 완료, SQL은 차별화 포인트 |

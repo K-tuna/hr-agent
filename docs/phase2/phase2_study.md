@@ -3,7 +3,7 @@
 > **목적**: Phase 2 구현에 필요한 개념과 기술을 체계적으로 학습
 > **대상**: Python 기초 지식이 있는 초보 개발자
 > **학습 방식**: 개념 이해 → 실습 → 구현 → 검증 사이클
-> **버전**: 2.0 (2025-01-16, PRD v2.0 동기화)
+> **버전**: 3.1 (2025-01-16, PRD v2.1 동기화 - RAG 먼저, SQL 나중)
 
 ---
 
@@ -12,8 +12,8 @@
 1. [학습 로드맵 개요](#1-학습-로드맵-개요)
 2. [Week 1: 트레이싱 (Task 3)](#2-week-1-트레이싱-task-3) - Observability First
 3. [Week 2: 평가 시스템 (Task 1-2)](#3-week-2-평가-시스템-task-1-2)
-4. [Week 3: SQL Agent 고도화 (Task 11, 10, 10-2, 10-3, 12)](#4-week-3-sql-agent-고도화-task-11-10-10-2-10-3-12) - 2025 SOTA
-5. [Week 4: RAG Agent 고도화 (Task 7, 9, 8)](#5-week-4-rag-agent-고도화-task-7-9-8) - 2025 SOTA
+4. [Week 4: SQL Agent 고도화 (Task 11, 10, 10-2, 10-3, 12)](#4-week-4-sql-agent-고도화-task-11-10-10-2-10-3-12) - 차별화 포인트
+5. [Week 3: RAG Agent 고도화 (Task 7, 9, 8)](#5-week-3-rag-agent-고도화-task-7-9-8) - 빠르게 완료 ⭐먼저
 6. [Week 5: 보안 (Task 5, 4)](#6-week-5-보안-task-5-4)
 7. [Week 6: UX 개선 (Task 13)](#7-week-6-ux-개선-task-13)
 8. [추가 학습 자료](#8-추가-학습-자료)
@@ -35,17 +35,17 @@ Week 2: 평가 시스템 (RAGAS, Execution Accuracy)
   ├─ Day 3-4: RAGAS 실습
   └─ Day 5: SQL 평가 버그 수정
 
-Week 3: SQL Agent 고도화 (2025 SOTA) ★ 순서 변경
+Week 3: RAG Agent 고도화 (2025 SOTA) - 빠르게 완료
+  ├─ Day 1-2: Chunking 최적화 (200-300 단어)
+  ├─ Day 3-4: Hybrid Search (BM25 + FAISS)
+  └─ Day 5: Reranker (Cross-encoder) 적용
+
+Week 4: SQL Agent 고도화 (2025 SOTA) - 차별화 포인트 ★
   ├─ Day 1: Schema Enhancement (컬럼 설명 추가)
   ├─ Day 2-3: Dynamic Few-shot 임베딩
   ├─ Day 4: 마스크 질문 임베딩 (신규)
   ├─ Day 5: CoT 프롬프팅 (신규)
   └─ Day 6: SQLCoder 비교 실험 (선택적)
-
-Week 4: RAG Agent 고도화 (2025 SOTA) ★ 순서 변경
-  ├─ Day 1-2: Chunking 최적화 (200-300 단어)
-  ├─ Day 3-4: Hybrid Search (BM25 + FAISS)
-  └─ Day 5: Reranker (Cross-encoder) 적용
 
 Week 5: 보안 (SQL Validation, PII, Guardrails)
   ├─ Day 1-2: SQL 파싱 및 검증
@@ -540,7 +540,7 @@ generated_sql = response.get("metadata", {}).get("sql", "")
 
 ---
 
-## 4. Week 3: SQL Agent 고도화 (Task 11, 10, 10-2, 10-3, 12) - 2025 SOTA
+## 4. Week 4: SQL Agent 고도화 (Task 11, 10, 10-2, 10-3, 12) - 차별화 포인트
 
 ### 4.1 학습 목표
 
@@ -1078,7 +1078,7 @@ for q in questions:
 
 ---
 
-## 5. Week 4: RAG Agent 고도화 (Task 7, 9, 8) - 2025 SOTA
+## 5. Week 3: RAG Agent 고도화 (Task 7, 9, 8) - 빠르게 완료
 
 ### 5.1 학습 목표
 
@@ -1816,7 +1816,13 @@ streamlit run streamlit_streaming.py
 - [ ] ragas_metrics.py 실습 완료
 - [ ] evaluate_sql.py 버그 수정 완료
 
-### Week 3: SQL Agent 고도화 (2025 SOTA)
+### Week 3: RAG Agent 고도화 (빠르게 완료) ⭐먼저
+- [ ] Chunking 최적화 (200-300 단어)
+- [ ] Hybrid Search (BM25 + FAISS) 구현
+- [ ] Reranker (Cross-encoder) 적용
+- [ ] RAG 정확도 60% 이상 달성
+
+### Week 4: SQL Agent 고도화 (차별화 포인트)
 - [ ] Schema Enhancement 적용
 - [ ] Dynamic Few-shot 개념 이해
 - [ ] FAISS 예시 인덱스 생성
@@ -1824,12 +1830,6 @@ streamlit run streamlit_streaming.py
 - [ ] CoT 프롬프트 템플릿 적용
 - [ ] SQLCoder 모델 테스트
 - [ ] SQL 정확도 70% 이상 달성
-
-### Week 4: RAG Agent 고도화 (2025 SOTA)
-- [ ] Chunking 최적화 (200-300 단어)
-- [ ] Hybrid Search (BM25 + FAISS) 구현
-- [ ] Reranker (Cross-encoder) 적용
-- [ ] RAG 정확도 60% 이상 달성
 
 ### Week 5: 보안
 - [ ] SQL Validation 코드 작성
@@ -1852,3 +1852,4 @@ streamlit run streamlit_streaming.py
 | 1.0 | 2025-01-12 | 초안 작성 |
 | 2.0 | 2025-01-15 | 2025 현업 표준 반영: Week 3 SQL 고도화, Week 4 RAG 고도화 추가, 순서 재배치 |
 | 3.0 | 2025-01-16 | PRD v2.0 동기화: Week 순서 변경 (LangSmith→평가→SQL→RAG→보안→UX), Task 10-2/10-3 추가, RAG 순서 수정 (Hybrid→Reranker) |
+| 3.1 | 2025-01-16 | **학습 순서 변경**: Week 3 = RAG (빠르게 완료), Week 4 = SQL (차별화 포인트) - RAG 먼저 학습 후 SQL에 집중 |

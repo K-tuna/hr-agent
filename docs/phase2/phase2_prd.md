@@ -1,8 +1,8 @@
 # Phase 2: 평가/모니터링/보안/고도화 PRD
 
 > **Product Requirements Document**
-> 버전: 2.0
-> 작성일: 2025-01-15
+> 버전: 2.1
+> 작성일: 2025-01-16
 > 상태: Draft (2025 현업 표준 반영)
 
 ---
@@ -468,24 +468,24 @@ Given the database schema, here is the SQL query that answers [QUESTION]{user_qu
 [Step 3] Task 1: RAG 평가 RAGAS 적용
          ↓
 
-[Phase C] SQL Agent 고도화 (SOTA 파이프라인 순서)
-[Step 4] Task 11: Schema Enhancement (먼저, 오류 27% 감소)
+[Phase C] RAG Agent 고도화 (SOTA 파이프라인 순서) - 빠르게 완료
+[Step 4] Task 7: Chunking 최적화 (+10~20%)
          ↓
-[Step 5] Task 10: Dynamic Few-shot 임베딩 (+19%)
+[Step 5] Task 9: Hybrid Search (후보 수집, recall)
          ↓
-[Step 6] Task 10-2: 마스크 질문 임베딩 (SOTA)
-         ↓
-[Step 7] Task 10-3: CoT 프롬프팅 (+10~15%)
-         ↓
-[Step 8] Task 12: SQLCoder (선택적, 실험 후 결정)
+[Step 6] Task 8: Reranker (최종 정렬, precision, +42%)
          ↓
 
-[Phase D] RAG Agent 고도화 (SOTA 파이프라인 순서)
-[Step 9] Task 7: Chunking 최적화 (+10~20%)
+[Phase D] SQL Agent 고도화 (SOTA 파이프라인 순서) - 차별화 포인트
+[Step 7] Task 11: Schema Enhancement (먼저, 오류 27% 감소)
          ↓
-[Step 10] Task 9: Hybrid Search (후보 수집, recall)
+[Step 8] Task 10: Dynamic Few-shot 임베딩 (+19%)
          ↓
-[Step 11] Task 8: Reranker (최종 정렬, precision, +42%)
+[Step 9] Task 10-2: 마스크 질문 임베딩 (SOTA)
+         ↓
+[Step 10] Task 10-3: CoT 프롬프팅 (+10~15%)
+         ↓
+[Step 11] Task 12: SQLCoder (선택적, 실험 후 결정)
          ↓
 
 [Phase E] 보안 (Security)
@@ -515,14 +515,14 @@ notebooks/phase2/
 | 1 | Task 3 | study_01_langsmith | step_01_langsmith | LangSmith 트레이싱 |
 | 2 | Task 2 | study_02_sql_evaluation | step_02_sql_evaluation | SQL 평가 버그 수정 |
 | 3 | Task 1 | study_03_rag_evaluation | step_03_rag_evaluation | RAGAS 평가 |
-| 4 | Task 11 | study_04_schema_enhancement | step_04_schema_enhancement | 스키마 설명 추가 |
-| 5 | Task 10 | study_05_fewshot_embedding | step_05_fewshot_embedding | Few-shot 임베딩 검색 |
-| 6 | Task 10-2 | study_06_masked_fewshot | step_06_masked_fewshot | 마스크 질문 임베딩 |
-| 7 | Task 10-3 | study_07_cot_prompting | step_07_cot_prompting | CoT 프롬프팅 |
-| 8 | Task 12 | study_08_sqlcoder | step_08_sqlcoder_comparison | SQLCoder 비교 (선택적) |
-| 9 | Task 7 | study_09_chunking | step_09_chunking | 청킹 최적화 |
-| 10 | Task 9 | study_10_hybrid_search | step_10_hybrid_search | Hybrid Search |
-| 11 | Task 8 | study_11_reranker | step_11_reranker | Reranker |
+| 4 | Task 7 | study_04_chunking | step_04_chunking | 청킹 최적화 |
+| 5 | Task 9 | study_05_hybrid_search | step_05_hybrid_search | Hybrid Search |
+| 6 | Task 8 | study_06_reranker | step_06_reranker | Reranker |
+| 7 | Task 11 | study_07_schema_enhancement | step_07_schema_enhancement | 스키마 설명 추가 |
+| 8 | Task 10 | study_08_fewshot_embedding | step_08_fewshot_embedding | Few-shot 임베딩 검색 |
+| 9 | Task 10-2 | study_09_masked_fewshot | step_09_masked_fewshot | 마스크 질문 임베딩 |
+| 10 | Task 10-3 | study_10_cot_prompting | step_10_cot_prompting | CoT 프롬프팅 |
+| 11 | Task 12 | study_11_sqlcoder | step_11_sqlcoder_comparison | SQLCoder 비교 (선택적) |
 | 12 | Task 5 | study_12_sql_validation | step_12_sql_validation | SQL 쿼리 검증 |
 | 13 | Task 4 | study_13_guardrails | step_13_guardrails | Guardrails + PII |
 | 14 | Task 13 | study_14_streaming | step_14_streaming | Streaming + 히스토리 |
@@ -645,3 +645,4 @@ FAISS_WEIGHT=0.5
 | 1.0 | 2025-01-11 | 초안 작성 |
 | 1.1 | 2025-01-12 | 현업 표준 반영 (RAGAS, Execution Accuracy), 파인튜닝 관계 명시, Task 2 버그 수정으로 변경 |
 | 2.0 | 2025-01-15 | **2025 현업 표준 적용**: Epic 6 (SQL 고도화) 추가, Epic 4 (RAG 고도화) 순서 변경, 학습 노트북 매핑 추가 |
+| 2.1 | 2025-01-16 | **실행 순서 변경**: RAG 먼저 (Phase C), SQL 나중 (Phase D) - RAG는 빠르게 완료, SQL은 차별화 포인트 |
