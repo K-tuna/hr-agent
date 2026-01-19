@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-01-20T06:17:14.997518",
+  "document_info": {
+    "file": "02_회사규정.pdf",
+    "total_chars": 55637,
+    "pages": 48
+  },
+  "experiments": [
+    {
+      "name": "small",
+      "chunk_size": 500,
+      "overlap": 50,
+      "chunk_count": 147,
+      "avg_length": 397,
+      "context_precision": 0.802222222187412,
+      "context_recall": 1.0,
+      "ragas_avg": 0.901111111093706
+    },
+    {
+      "name": "recommended",
+      "chunk_size": 800,
+      "overlap": 100,
+      "chunk_count": 96,
+      "avg_length": 618,
+      "context_precision": 0.8590277777447511,
+      "context_recall": 1.0,
+      "ragas_avg": 0.9295138888723755
+    },
+    {
+      "name": "current",
+      "chunk_size": 1000,
+      "overlap": 200,
+      "chunk_count": 91,
+      "avg_length": 694,
+      "context_precision": 0.7840277777537235,
+      "context_recall": 0.9,
+      "ragas_avg": 0.8420138888768618
+    },
+    {
+      "name": "large",
+      "chunk_size": 1500,
+      "overlap": 300,
+      "chunk_count": 48,
+      "avg_length": 1159,
+      "context_precision": 0.8743055555213323,
+      "context_recall": 1.0,
+      "ragas_avg": 0.9371527777606661
+    },
+    {
+      "name": "xlarge",
+      "chunk_size": 2000,
+      "overlap": 200,
+      "chunk_count": 48,
+      "avg_length": 1159,
+      "context_precision": 0.8480555555252522,
+      "context_recall": 1.0,
+      "ragas_avg": 0.9240277777626261
+    }
+  ],
+  "best_config": {
+    "name": "large",
+    "chunk_size": 1500,
+    "chunk_overlap": 300,
+    "top_k": 5,
+    "context_precision": 0.8743055555213323,
+    "context_recall": 1.0,
+    "ragas_avg": 0.9371527777606661,
+    "reason": "Grid Search RAGAS 평가에서 최고 점수 (평균 0.937)"
+  },
+  "recommendation": {
+    "chunk_size": 1500,
+    "chunk_overlap": 300,
+    "top_k": 5,
+    "add_start_index": true,
+    "reason": "Grid Search RAGAS 평가에서 최고 점수 (평균 0.937)"
+  }
+}

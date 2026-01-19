@@ -77,7 +77,7 @@ def load_documents(source_path: Path) -> list[Document]:
     return documents
 
 
-def chunk_documents(documents: list[Document], chunk_size: int = 1000, overlap: int = 200) -> list[Document]:
+def chunk_documents(documents: list[Document], chunk_size: int = 1500, overlap: int = 300) -> list[Document]:
     """문서 청킹"""
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
