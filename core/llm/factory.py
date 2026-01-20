@@ -69,8 +69,8 @@ def create_embeddings(
     Embedding 모델 인스턴스 생성 (RAG 벡터 검색용)
 
     Args:
-        provider: "openai" 또는 "ollama"
-        model: 임베딩 모델명 (예: "text-embedding-3-small", "nomic-embed-text")
+        provider: "openai", "ollama", "google", 또는 "huggingface"
+        model: 임베딩 모델명 (예: "text-embedding-3-small", "nomic-embed-text", "models/embedding-001", "intfloat/multilingual-e5-large-instruct")
         base_url: Ollama 서버 URL (ollama일 때만 사용)
 
     Returns:
@@ -82,6 +82,8 @@ def create_embeddings(
     Examples:
         >>> embeddings = create_embeddings("openai", "text-embedding-3-small")
         >>> embeddings = create_embeddings("ollama", "nomic-embed-text")
+        >>> embeddings = create_embeddings("google", "models/embedding-001")
+        >>> embeddings = create_embeddings("huggingface", "intfloat/multilingual-e5-large-instruct")
     """
     if provider == "ollama":
         from langchain_ollama import OllamaEmbeddings
@@ -92,5 +94,26 @@ def create_embeddings(
     elif provider == "openai":
         from langchain_openai import OpenAIEmbeddings
         return OpenAIEmbeddings(model=model)
+    elif provider == "google":
+        import os
+        from langchain_google_genai import GoogleGenerativeAIEmbeddings
+        return GoogleGenerativeAIEmbeddings(
+            model=model,
+            google_api_key=os.getenv("GOOGLE_API_KEY")
+        )
+    elif provider == "huggingface":
+        from sentence_transformers import SentenceTransformer
+
+        class SentenceTransformerEmbeddings(Embeddings):
+            def __init__(self, model_name: str):
+                self.model = SentenceTransformer(model_name)
+
+            def embed_documents(self, texts: list[str]) -> list[list[float]]:
+                return self.model.encode(texts, convert_to_numpy=True).tolist()
+
+            def embed_query(self, text: str) -> list[float]:
+                return self.model.encode(text, convert_to_numpy=True).tolist()
+
+        return SentenceTransformerEmbeddings(model)
     else:
-        raise ValueError(f"지원하지 않는 Embedding provider입니다: {provider}. 'openai' 또는 'ollama'를 사용하세요.")
+        raise ValueError(f"지원하지 않는 Embedding provider입니다: {provider}. 'openai', 'ollama', 'google', 또는 'huggingface'를 사용하세요.")
